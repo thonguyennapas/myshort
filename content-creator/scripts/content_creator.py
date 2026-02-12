@@ -44,6 +44,9 @@ YÊU CẦU BẮT BUỘC:
 3. Màu sắc rực rỡ, nhân vật dễ thương
 4. Nhịp điệu vui tươi, sôi động
 5. Có yếu tố giáo dục (đếm số, màu sắc, chữ cái, v.v.)
+6. ⚠️ QUAN TRỌNG: Mỗi scene TỐI ĐA 8 GIÂY (vì video AI chỉ tạo được max 8s/clip)
+7. Video {duration} phút = {total_seconds} giây → cần CHÍNH XÁC {num_scenes} scenes (mỗi scene 5-8 giây)
+8. Timestamps phải liên tục, không trùng, tổng = {total_seconds} giây
 
 Trả lời CHÍNH XÁC theo format JSON sau (không thêm text ngoài JSON):
 
@@ -65,11 +68,11 @@ Trả lời CHÍNH XÁC theo format JSON sau (không thêm text ngoài JSON):
     "scenes": [
         {{
             "id": 1,
-            "timestamp": "0:00-0:20",
+            "timestamp": "0:00-0:08",
             "lyrics_section": "intro",
-            "description": "Mô tả chi tiết cảnh (nhân vật, hành động, bối cảnh)",
+            "description": "Mô tả chi tiết cảnh (nhân vật, hành động, bối cảnh) — CHỈ 1 hành động đơn giản cho 8 giây",
             "characters": ["tên nhân vật dễ thương"],
-            "action": "hành động cụ thể",
+            "action": "1 hành động cụ thể, đơn giản",
             "background": "mô tả nền",
             "colors": "bảng màu chủ đạo",
             "camera_movement": "zoom in/out/pan/static",
@@ -92,106 +95,99 @@ Trả lời CHÍNH XÁC theo format JSON sau (không thêm text ngoài JSON):
 }}
 """
 
-# ── Dry-run Sample ──
+# ── Dry-run Sample (max 8s per scene) ──
 SAMPLE_SCRIPT = {
     "title": "Counting Stars with Teddy Bear",
     "title_vi": "Đếm Sao cùng Gấu Bông",
-    "duration_minutes": 3,
+    "duration_minutes": 1,
     "target_age": "2-5",
     "theme": "counting",
     "lyrics": {
         "intro": "Hello hello little friends!\nCome and play with Teddy Bear!\nLet's count the stars tonight!\nOne by one, shining bright!",
         "verse1": "One little star up in the sky,\nTwinkling, twinkling way up high!\nTwo little stars say hello,\nWatch them sparkle, watch them glow!",
         "chorus": "Count with me! One, two, three!\nStars are shining, can you see?\nFour and five, up so high!\nCounting stars across the sky!",
-        "verse2": "Six little stars dance around,\nSeven stars without a sound!\nEight and nine, almost done,\nCounting stars is so much fun!",
-        "chorus_repeat": "Count with me! One, two, three!\nStars are shining, can you see?\nFour and five, up so high!\nCounting stars across the sky!",
-        "bridge": "Ten bright stars in a row,\nNow you know how numbers go!\nLet's count again, you and me,\nOne to ten, so happily!",
         "outro": "Great job counting! You're a star!\nTeddy Bear says you've come far!\nGoodnight friends, sleep so tight,\nSee you next time! Bye bye! Night night!"
     },
     "scenes": [
         {
-            "id": 1,
-            "timestamp": "0:00-0:20",
-            "lyrics_section": "intro",
-            "description": "A cute 3D teddy bear waking up in a cozy colorful bedroom. Stars visible through window.",
+            "id": 1, "timestamp": "0:00-0:08", "lyrics_section": "intro",
+            "description": "Cute 3D teddy bear waking up in a cozy colorful bedroom, yawning and stretching.",
             "characters": ["Teddy Bear (brown, fluffy, big eyes)"],
-            "action": "Teddy stretches, yawns cutely, waves at camera",
+            "action": "Teddy stretches and yawns cutely",
             "background": "Colorful kids bedroom with star-patterned wallpaper",
-            "colors": "warm yellow, soft blue, pink, purple",
+            "colors": "warm yellow, soft blue, pink",
             "camera_movement": "slow zoom in to Teddy",
             "mood": "gentle, inviting"
         },
         {
-            "id": 2,
-            "timestamp": "0:20-0:50",
-            "lyrics_section": "verse1",
-            "description": "Teddy flies through night sky. 1 star appears, then 2 stars. Bright golden stars with faces.",
-            "characters": ["Teddy Bear", "Star 1 (golden, smiling)", "Star 2 (silver, winking)"],
-            "action": "Teddy points and counts each star. Stars twinkle and dance.",
-            "background": "Deep blue night sky with scattered clouds",
-            "colors": "deep blue, golden, silver, white sparkles",
-            "camera_movement": "pan across sky following Teddy",
+            "id": 2, "timestamp": "0:08-0:16", "lyrics_section": "intro",
+            "description": "Teddy waves hello at the camera, musical notes float around him.",
+            "characters": ["Teddy Bear"],
+            "action": "Waves at camera, smiles big",
+            "background": "Colorful bedroom, window showing night sky",
+            "colors": "warm yellow, pink, purple",
+            "camera_movement": "static wide shot",
+            "mood": "happy, welcoming"
+        },
+        {
+            "id": 3, "timestamp": "0:16-0:24", "lyrics_section": "verse1",
+            "description": "Teddy flies out the window into the night sky. One golden star appears twinkling.",
+            "characters": ["Teddy Bear", "Star 1 (golden, smiling)"],
+            "action": "Teddy floats up, points at the star",
+            "background": "Deep blue night sky",
+            "colors": "deep blue, golden, white sparkles",
+            "camera_movement": "pan upward following Teddy",
             "mood": "magical, wonder"
         },
         {
-            "id": 3,
-            "timestamp": "0:50-1:20",
-            "lyrics_section": "chorus",
-            "description": "Stars 1-5 line up in a row. Big colorful numbers appear next to each star. Rainbow effect.",
-            "characters": ["Teddy Bear", "5 Stars (different colors)"],
-            "action": "Teddy dances and jumps, counting each star. Numbers bounce.",
+            "id": 4, "timestamp": "0:24-0:32", "lyrics_section": "verse1",
+            "description": "Second silver star appears. Teddy counts 'one, two!' with fingers.",
+            "characters": ["Teddy Bear", "Star 1", "Star 2 (silver, winking)"],
+            "action": "Teddy holds up two fingers, stars twinkle",
+            "background": "Night sky with scattered clouds",
+            "colors": "deep blue, golden, silver",
+            "camera_movement": "slight zoom in on Teddy counting",
+            "mood": "playful, educational"
+        },
+        {
+            "id": 5, "timestamp": "0:32-0:40", "lyrics_section": "chorus",
+            "description": "Stars 1-3 line up in a row. Big colorful numbers 1,2,3 appear bouncing.",
+            "characters": ["Teddy Bear", "3 Stars"],
+            "action": "Teddy dances and jumps, numbers bounce",
             "background": "Night sky with rainbow aurora",
             "colors": "rainbow spectrum, golden numbers",
             "camera_movement": "dynamic, slight zoom on numbers",
             "mood": "energetic, exciting"
         },
         {
-            "id": 4,
-            "timestamp": "1:20-1:50",
-            "lyrics_section": "verse2",
-            "description": "Stars 6-9 join the lineup. Each new star does a cute trick landing.",
-            "characters": ["Teddy Bear", "Stars 6-9 (pastel colors)"],
-            "action": "New stars flip and spin before landing. Teddy claps.",
-            "background": "Cosmic playground with floating asteroids",
-            "colors": "pastel pink, mint green, lavender, peach",
-            "camera_movement": "tracking each new star arrival",
-            "mood": "exciting, building up"
-        },
-        {
-            "id": 5,
-            "timestamp": "1:50-2:20",
-            "lyrics_section": "chorus_repeat",
-            "description": "All stars celebrate with Teddy. Fireworks of sparkles.",
-            "characters": ["Teddy Bear", "All 9 Stars"],
-            "action": "Group dance, stars arrange into patterns (circle, heart)",
-            "background": "Night sky filled with stardust and sparkles",
-            "colors": "full rainbow, gold sparkles, silver streaks",
-            "camera_movement": "pull back to wide shot then zoom in",
+            "id": 6, "timestamp": "0:40-0:48", "lyrics_section": "chorus",
+            "description": "Numbers 4 and 5 appear with firework effects. All 5 stars celebrate.",
+            "characters": ["Teddy Bear", "5 Stars"],
+            "action": "Stars spin and dance in formation",
+            "background": "Night sky filled with stardust",
+            "colors": "full rainbow, gold sparkles",
+            "camera_movement": "pull back to wide shot",
             "mood": "jubilant, peak energy"
         },
         {
-            "id": 6,
-            "timestamp": "2:20-2:45",
-            "lyrics_section": "bridge",
-            "description": "Star 10 arrives dramatically. All 10 stars form the number 10. Teddy counts from 1-10.",
-            "characters": ["Teddy Bear", "Star 10 (biggest, rainbow)"],
-            "action": "Stars rearrange to show numbers 1-10 sequence",
-            "background": "Clear starry sky with Milky Way visible",
-            "colors": "cosmic blue, rainbow numbers, bright white",
-            "camera_movement": "slow panoramic sweep",
-            "mood": "proud, accomplished"
+            "id": 7, "timestamp": "0:48-0:56", "lyrics_section": "outro",
+            "description": "Teddy back in bedroom, stars wave goodbye through the window.",
+            "characters": ["Teddy Bear", "Stars peeking through window"],
+            "action": "Teddy waves goodbye, blows a kiss",
+            "background": "Cozy bedroom, warm lamp light",
+            "colors": "warm amber, soft blue moonlight",
+            "camera_movement": "slow zoom out",
+            "mood": "warm, gentle"
         },
         {
-            "id": 7,
-            "timestamp": "2:45-3:00",
-            "lyrics_section": "outro",
-            "description": "Teddy back in bedroom. Stars wave goodbye through window. Teddy tucks into bed.",
-            "characters": ["Teddy Bear", "Stars peeking through window"],
-            "action": "Teddy waves goodbye, blows a kiss, pulls blanket up",
-            "background": "Cozy bedroom, warm lamp light, moonlight through window",
-            "colors": "warm amber, soft blue moonlight, cozy pink",
-            "camera_movement": "slow zoom out, fade to stars",
-            "mood": "warm, gentle, sleepy"
+            "id": 8, "timestamp": "0:56-1:00", "lyrics_section": "outro",
+            "description": "Teddy tucks into bed, pulls blanket up. Moon smiles through window.",
+            "characters": ["Teddy Bear"],
+            "action": "Pulls blanket up, closes eyes, smiles",
+            "background": "Dim bedroom with moonlight",
+            "colors": "soft blue, cozy pink, warm amber",
+            "camera_movement": "fade to stars",
+            "mood": "sleepy, peaceful"
         }
     ],
     "music_direction": {
@@ -205,7 +201,7 @@ SAMPLE_SCRIPT = {
     },
     "seo": {
         "tags": ["counting", "numbers", "stars", "teddy bear", "kids song", "nursery rhyme", "educational", "toddler"],
-        "description": "Count to 10 with Teddy Bear! Fun educational counting song for toddlers with colorful stars and catchy music."
+        "description": "Count to 5 with Teddy Bear! Fun educational counting song for toddlers with colorful stars and catchy music."
     }
 }
 
@@ -321,10 +317,15 @@ def create_script(topic, age_range="2-5", duration=3, style="cocomelon", dry_run
         config = get_config()
     
     # Build prompt
+    total_seconds = duration * 60
+    num_scenes = total_seconds // 8  # ~22-23 scenes for 3 min
+    
     prompt = SCRIPT_PROMPT.format(
         age_range=age_range,
         duration=duration,
         topic=topic,
+        total_seconds=total_seconds,
+        num_scenes=num_scenes,
     )
     
     print_step(1, 3, "Gọi LLM tạo kịch bản...")
