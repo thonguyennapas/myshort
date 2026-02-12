@@ -1,19 +1,22 @@
 ---
 name: kids-content-creator
-description: "Agent 2: Viết kịch bản video YouTube Kids. Dùng KHI user CHỈ muốn viết kịch bản/lyrics mà KHÔNG cần tạo nhạc+video. CHẠY BẰNG LỆNH BASH python3."
+description: "✍️ Agent 2: Viết kịch bản / script / lyrics. Dùng khi user nói 'viết kịch bản', 'tạo script', 'viết lyrics', 'sáng tác', 'kịch bản đếm số', 'kịch bản counting'. KHÔNG phải pipeline - chỉ viết kịch bản thôi. CHẠY BẰNG LỆNH BASH python3."
 ---
 
 # ✍️ Agent 2: Content Creator — Kịch bản YouTube Kids
 
 > 🚨 **LUÔN LUÔN** chạy bằng **lệnh bash** như bên dưới.
+> ⚡ **KHÔNG PHẢI PIPELINE** — skill này CHỈ viết kịch bản, KHÔNG tạo video.
 
 ## KHI NÀO SỬ DỤNG
 
-Dùng agent này khi user **CHỈ** muốn kịch bản/lyrics:
-- "viết kịch bản video kids", "tạo lyrics trẻ em"
-- "viết script cho video counting", "sáng tác lời bài hát trẻ em"
+Dùng agent này khi user muốn **viết kịch bản / script / lyrics**:
+- "viết kịch bản", "viết kịch bản đếm số", "viết kịch bản counting"
+- "tạo script", "tạo kịch bản", "viết script cho video"
+- "viết lyrics", "sáng tác lời bài hát trẻ em", "tạo lyrics"
+- "kịch bản về...", "script về..."
 
-> ⚠️ Nếu user muốn **TẠO VIDEO hoàn chỉnh** → dùng skill `youtube-kids-pipeline`.
+> ⚠️ Nếu user muốn **TẠO VIDEO hoàn chỉnh** (nói "tạo video", "làm video") → dùng skill `youtube-kids-pipeline`.
 
 ## CÁCH THỰC HIỆN
 

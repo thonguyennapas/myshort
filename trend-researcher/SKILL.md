@@ -1,6 +1,6 @@
 ---
 name: kids-trend-researcher
-description: "Agent 1: Nghiên cứu xu hướng YouTube Kids. Dùng KHI user CHỈ hỏi trend/xu hướng mà KHÔNG cần tạo video. CHẠY BẰNG LỆNH BASH python3."
+description: "🔍 Agent 1: Tìm trend / xu hướng YouTube Kids. Dùng khi user nói 'tìm trend', 'tìm xu hướng', 'trend youtube kids', 'xem trend'. KHÔNG phải pipeline - chỉ tìm trend thôi. CHẠY BẰNG LỆNH BASH python3."
 ---
 
 # 🔍 Agent 1: Trend Researcher — Xu hướng YouTube Kids

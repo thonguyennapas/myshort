@@ -1,24 +1,35 @@
 ---
 name: youtube-kids-pipeline
-description: "🎬 Pipeline TỰ ĐỘNG sản xuất video YouTube Kids. Khi user muốn TẠO VIDEO, LÀM VIDEO, XUẤT VIDEO KIDS → LUÔN chạy orchestrator.py. Pipeline 5 agents tự phối hợp. CHẠY BẰNG LỆNH BASH python3."
+description: "🎬 Pipeline TỰ ĐỘNG sản xuất video YouTube Kids HOÀN CHỈNH (5 bước). CHỈ dùng khi user nói RÕ RÀNG 'tạo video', 'làm video', 'xuất video', 'chạy pipeline'. KHÔNG dùng khi user chỉ muốn 1 việc (viết kịch bản, tìm trend, tạo nhạc). CHẠY BẰNG LỆNH BASH python3."
 ---
 
 # 🎬 YouTube Kids Pipeline — Orchestrator Tự Động
 
-> ⚡ **ĐÂY LÀ SKILL CHÍNH.** Khi user yêu cầu **tạo video** → LUÔN dùng skill này.
+> ⚡ **ĐÂY LÀ SKILL PIPELINE** — chạy TẤT CẢ 5 agents liên tiếp.
 > 🚨 **LUÔN LUÔN** chạy bằng **lệnh bash** như bên dưới.
 
-## KHI NÀO SỬ DỤNG — ƯU TIÊN CAO NHẤT
+## KHI NÀO SỬ DỤNG — CHỈ KHI USER MUỐN LÀM VIDEO
 
-Dùng skill này khi user nhắn BẤT KỲ câu nào sau:
+Dùng skill này **CHỈ KHI** user nói rõ muốn **TẠO VIDEO / LÀM VIDEO**:
 
 - "tạo video kids", "làm video trẻ em", "xuất video youtube kids"
-- "tạo video về counting", "video nhạc trẻ em", "sản xuất video kids"
 - "chạy pipeline", "start pipeline", "full pipeline"
-- "tạo video", "làm video", "render video" (khi ngữ cảnh là trẻ em)
-- Bất kỳ yêu cầu nào cần **nhiều hơn 1 agent** hoạt động
+- "tạo video", "làm video", "render video"
+- "tạo video về counting", "làm video đếm số"
 
-> ⚠️ **KHÔNG** dùng skill này khi user chỉ hỏi 1 việc cụ thể (ví dụ: "tìm trend thôi", "viết kịch bản thôi"). Khi đó dùng agent riêng lẻ.
+## ⛔ KHÔNG DÙNG PIPELINE KHI:
+
+**Nếu user chỉ muốn 1 việc cụ thể → DÙNG AGENT RIÊNG LẺ, KHÔNG chạy pipeline!**
+
+| User nói | Dùng skill nào | KHÔNG phải pipeline |
+|----------|---------------|---------------------|
+| "viết kịch bản", "tạo script", "viết lyrics" | `kids-content-creator` | ✅ Agent 2 riêng |
+| "tìm trend", "tìm xu hướng" | `kids-trend-researcher` | ✅ Agent 1 riêng |
+| "tạo nhạc", "generate music" | `kids-music-maker` | ✅ Agent 3 riêng |
+| "render clips", "tạo video clips" | `kids-video-maker` | ✅ Agent 4 riêng |
+| "ghép video", "gửi telegram" | `kids-video-aggregator` | ✅ Agent 5 riêng |
+
+> 🔑 **QUY TẮC VÀNG:** Nếu user KHÔNG nói "tạo video" hoặc "làm video" → KHÔNG chạy pipeline.
 
 ## CÁCH THỰC HIỆN — 1 LỆNH DUY NHẤT
 

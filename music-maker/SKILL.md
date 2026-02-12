@@ -1,6 +1,6 @@
 ---
 name: kids-music-maker
-description: "Agent 3: Tạo nhạc thiếu nhi qua Suno AI. Dùng KHI user CHỈ cần tạo nhạc mà KHÔNG cần video. CHẠY BẰNG LỆNH BASH python3."
+description: "🎵 Agent 3: Tạo nhạc thiếu nhi qua Suno AI. Dùng khi user nói 'tạo nhạc', 'generate music', 'làm nhạc', 'nhạc trẻ em'. KHÔNG phải pipeline - chỉ tạo nhạc thôi. CHẠY BẰNG LỆNH BASH python3."
 ---
 
 # 🎵 Agent 3: Music Maker — Nhạc Suno AI

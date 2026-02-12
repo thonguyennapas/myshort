@@ -1,6 +1,6 @@
 ---
 name: kids-video-maker
-description: "Agent 4: Tạo video clips qua Google Veo. Dùng KHI user CHỈ cần render video clips mà KHÔNG ghép. CHẠY BẰNG LỆNH BASH python3."
+description: "🎬 Agent 4: Tạo video clips qua Google Veo. Dùng khi user nói 'render clips', 'tạo video clips', 'render video'. KHÔNG phải pipeline - chỉ tạo clips thôi. CHẠY BẰNG LỆNH BASH python3."
 ---
 
 # 🎬 Agent 4: Video Maker — Google Veo
