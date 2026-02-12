@@ -1,0 +1,12 @@
+.env
+*.env.local
+__pycache__/
+*.pyc
+.venv/
+output/
+*.mp3
+*.mp4
+*.wav
+pipeline-state.json
+.DS_Store
+Thumbs.db

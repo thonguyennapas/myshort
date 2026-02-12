@@ -1,0 +1,48 @@
+{
+    "allowed_themes": [
+        "animals", "colors", "numbers", "counting", "alphabet", "ABC",
+        "family", "friends", "nature", "flowers", "trees", "garden",
+        "music", "singing", "dancing", "clapping", "jumping",
+        "shapes", "sizes", "seasons", "weather", "rainbow",
+        "food", "fruits", "vegetables", "cooking",
+        "vehicles", "cars", "trains", "planes", "boats",
+        "space", "stars", "moon", "sun", "planets",
+        "ocean", "fish", "dolphins", "whales",
+        "dinosaurs", "farm", "zoo", "pets",
+        "birthday", "party", "playground", "sports",
+        "bedtime", "bath time", "morning routine",
+        "kindness", "sharing", "helping", "manners",
+        "nursery rhymes", "lullaby", "fairy tales"
+    ],
+    "blocked_keywords": [
+        "violence", "violent", "fight", "fighting", "kill", "killing",
+        "blood", "bloody", "gore", "gory",
+        "horror", "scary", "nightmare", "monster attack",
+        "weapon", "gun", "knife", "sword",
+        "death", "dead", "dying", "murder",
+        "sexual", "nude", "naked", "inappropriate",
+        "drug", "alcohol", "smoking", "cigarette",
+        "bully", "bullying", "abuse", "abusive",
+        "racist", "racism", "discrimination",
+        "gambling", "casino", "betting",
+        "curse", "swear", "profanity",
+        "kidnap", "kidnapping", "stranger danger",
+        "suicide", "self-harm", "depression",
+        "war", "terrorism", "bomb", "explosion",
+        "demon", "devil", "hell", "occult",
+        "toxic", "poison", "dangerous chemicals"
+    ],
+    "age_appropriate": {
+        "2-3": ["colors", "shapes", "animals", "nursery rhymes", "counting 1-10", "ABC", "family", "lullaby"],
+        "3-5": ["counting", "alphabet", "animals", "vehicles", "dinosaurs", "dancing", "nature", "fruits", "fairy tales"],
+        "5-8": ["science", "space", "ocean", "geography", "math", "music", "sports", "coding basics", "languages"]
+    },
+    "content_guidelines": {
+        "max_bpm": 140,
+        "min_bpm": 80,
+        "recommended_duration_sec": [120, 300],
+        "color_palette": ["bright", "pastel", "warm", "rainbow"],
+        "animation_style": ["2D cartoon", "3D Pixar-style", "claymation", "watercolor"],
+        "voice_tone": ["cheerful", "gentle", "enthusiastic", "soothing"]
+    }
+}
