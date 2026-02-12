@@ -456,6 +456,8 @@ def main():
                        help="Độ phân giải (mặc định: 1080p)")
     parser.add_argument("--dry-run", action="store_true",
                        help="Chỉ in Veo prompts, không gọi API")
+    parser.add_argument("--no-telegram", action="store_true",
+                       help="Không gửi Telegram notification")
     parser.add_argument("--output-dir", help="Thư mục lưu clips")
     parser.add_argument("--json", action="store_true",
                        help="In JSON ra stdout")
@@ -494,9 +496,12 @@ def main():
         print(f"  📁 Result: {result_path}")
         print(f"{'━' * 50}\n")
     
-    # ── Telegram Notification ──
+    # ── Telegram Notification (chỉ gửi khi chạy standalone) ──
+    if args.no_telegram or args.json:
+        return
+    
     msg_lines = ["🎬 *Agent 4: Video Maker*", ""]
-    msg_lines.append(f"📊 *Kết quả: {result['completed']}/{result['total_scenes']} clips*")
+    msg_lines.append(f"📊 *Kết quả: {result['completed']}/{result['total_clips']} clips*")
     
     if result['failed'] > 0:
         msg_lines.append(f"❌ Failed: {result['failed']} clip(s)")
@@ -506,7 +511,10 @@ def main():
     else:
         msg_lines.append("⚠️ Dry-run mode")
     
-    # Each clip: timestamp + prompt
+    # Build prompts from script for notification
+    veo_prompts = build_veo_prompts(script)
+    prompt_map = {p['clip_idx']: p['prompt'] for p in veo_prompts}
+    
     msg_lines.append("\n🎬 *Scene Prompts:*")
     clips = result.get('clips', [])
     for clip in clips:
@@ -515,11 +523,12 @@ def main():
         sub_id = clip.get('sub_id', 1)
         status = clip.get('status', '?')
         duration = clip.get('duration', '?')
-        prompt = clip.get('prompt', '')
+        prompt = prompt_map.get(clip_idx, '')
         
         status_icon = '✅' if status in ('completed', 'dry-run') else '❌'
         msg_lines.append(f"\n{status_icon} *Clip {clip_idx}* (Scene {scene_id}.{sub_id}, {duration}s)")
-        msg_lines.append(f"{prompt[:250]}")
+        if prompt:
+            msg_lines.append(f"{prompt[:250]}")
     
     send_telegram("\n".join(msg_lines))
     print_success("Đã gửi scene prompts qua Telegram")

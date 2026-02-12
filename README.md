@@ -102,14 +102,18 @@ Sau khi xong, agent hỏi: *"Muốn tiếp tục pipeline không?"* → user đ�
 
 ## 📨 Telegram Notification
 
-Mỗi agent tự động gửi kết quả về Telegram chat, **kể cả khi API fail**:
+### Chạy full pipeline (orchestrator)
+Orchestrator gửi **1 tin nhắn tổng hợp duy nhất** ở cuối pipeline — không spam từng agent riêng lẻ.
+
+### Chạy agent riêng lẻ (standalone)
+Mỗi agent tự động gửi kết quả chi tiết về Telegram, **kể cả khi API fail**:
 
 | Agent | Thành công | Thất bại (gửi để tạo tay) |
 |-------|-----------|---------------------------|
-| 1: Trend | Trends + gợi ý topic | "Không tìm được" |
+| 1: Trend | Trends + 🔗 URL + 📝 snippet | "Không tìm được" |
 | 2: Content | Script + scenes + lyrics | Error message |
 | 3: Music | Audio file + prompt | **Lyrics + Suno prompt** |
-| 4: Video | Clip results | **Timestamps + Veo prompts** |
+| 4: Video | Clip results + prompts | **Timestamps + Veo prompts** |
 
 ## Cấu trúc
 
@@ -181,6 +185,47 @@ Qua file JSON trong `~/myshort-output/`:
 | 4. Video | script.json | `clips/*.mp4` |
 | 5. Aggregate | audio + clips | `final/*.mp4` → Telegram |
 
+## 🔄 Cập nhật & Khởi động lại (trên VPS)
+
+Khi có thay đổi code mới, chạy 3 lệnh sau trên VPS:
+
+```bash
+# 1. Dừng pipeline đang chạy
+screen -X -S myshort quit
+
+# 2. Pull code mới từ git
+cd ~/napas/openclaw/myshort
+git pull origin main
+
+# 3. (Tùy chọn) Deploy lại skills nếu có thay đổi SKILL.md
+bash scripts/deploy.sh
+
+# 4. Chạy lại pipeline
+bash scripts/start.sh
+```
+
+### Quick 1-liner (copy-paste):
+
+```bash
+screen -X -S myshort quit 2>/dev/null; cd ~/napas/openclaw/myshort && git pull origin main && bash scripts/deploy.sh && bash scripts/start.sh
+```
+
+### Kiểm tra trạng thái:
+
+```bash
+# Xem pipeline có đang chạy không
+screen -ls
+
+# Xem logs pipeline đang chạy
+screen -r myshort
+
+# Detach khỏi screen (giữ pipeline chạy nền)
+# Nhấn: Ctrl+A → D
+
+# Dừng pipeline
+screen -X -S myshort quit
+```
+
 ## Thêm Agent Mới
 
 ```bash
@@ -198,4 +243,4 @@ bash scripts/deploy.sh
 ---
 
 📅 Cập nhật: 12/02/2026
-🔧 Version: 1.0 — 5 agents, Telegram notifications, GoAPI.ai Suno + Gemini Veo
+🔧 Version: 1.1 — 5 agents, consolidated Telegram notifications, GoAPI.ai Suno + Gemini Veo

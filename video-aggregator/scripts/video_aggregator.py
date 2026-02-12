@@ -457,6 +457,8 @@ def main():
     parser.add_argument("--send-only", help="Chỉ gửi file video có sẵn qua Telegram")
     parser.add_argument("--dry-run", action="store_true",
                        help="Test pipeline không thực hiện")
+    parser.add_argument("--no-telegram", action="store_true",
+                       help="Không gửi Telegram notification (dùng bởi orchestrator)")
     parser.add_argument("--output", help="Đường dẫn video output")
     parser.add_argument("--json", action="store_true",
                        help="In JSON ra stdout")

@@ -348,6 +348,8 @@ def main():
                        help="Timeout chờ Suno (giây, mặc định: 300)")
     parser.add_argument("--dry-run", action="store_true",
                        help="Chỉ in prompt, không gọi API")
+    parser.add_argument("--no-telegram", action="store_true",
+                       help="Không gửi Telegram notification")
     parser.add_argument("--output", help="Đường dẫn output MP3")
     parser.add_argument("--json", action="store_true",
                        help="In JSON ra stdout")
@@ -406,8 +408,9 @@ def main():
             msg_lines.append(f"  Instruments: {music.get('instruments', 'N/A')}")
         
         msg_lines.append("\n💡 Dán lyrics vào Suno/Udio để tạo nhạc thủ công")
-        send_telegram("\n".join(msg_lines))
-        print_success("Đã gửi lyrics + prompt qua Telegram")
+        if not (args.no_telegram or args.json):
+            send_telegram("\n".join(msg_lines))
+            print_success("Đã gửi lyrics + prompt qua Telegram")
         sys.exit(1)
     
     if args.json:
@@ -427,7 +430,10 @@ def main():
             print_success("Dry-run hoàn tất — prompt đã sẵn sàng")
         print(f"{'━' * 50}\n")
     
-    # ── Telegram Notification (success) ──
+    # ── Telegram Notification (chỉ gửi khi chạy standalone) ──
+    if args.no_telegram or args.json:
+        return
+    
     msg_lines = ["🎵 *Agent 3: Music Maker*", ""]
     
     if result.get("audio_file"):

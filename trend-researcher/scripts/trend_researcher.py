@@ -264,6 +264,8 @@ def main():
                        help="Lọc 1 category cụ thể")
     parser.add_argument("--dry-run", action="store_true",
                        help="Test workflow không gọi search thật")
+    parser.add_argument("--no-telegram", action="store_true",
+                       help="Không gửi Telegram notification")
     parser.add_argument("--output", help="Đường dẫn file output (mặc định: auto)")
     parser.add_argument("--json", action="store_true",
                        help="In kết quả ra stdout dạng JSON")
@@ -306,7 +308,10 @@ def main():
     
     print(f"{'━' * 50}\n")
     
-    # ── Telegram Notification ──
+    # ── Telegram Notification (chỉ gửi khi chạy standalone, không qua orchestrator) ──
+    # Khi orchestrator gọi, nó truyền --json và --no-telegram
+    if args.no_telegram or args.json:
+        return
     msg_lines = ["🔍 *Agent 1: Trend Researcher*", ""]
     msg_lines.append(f"📅 Ngày: {result.get('date', 'N/A')}")
     msg_lines.append(f"📊 Tìm được: {result['total_trends']} xu hướng\n")
@@ -316,8 +321,14 @@ def main():
         cat = t.get('category', '?')
         score = t.get('relevance', 0)
         kwords = ', '.join(t.get('keywords', [])[:5])
+        url = t.get('url', '')
+        snippet = t.get('snippet', '')[:100]
         msg_lines.append(f"{i+1}. [{cat}] *{name}*")
         msg_lines.append(f"   Score: {score} | {kwords}")
+        if url:
+            msg_lines.append(f"   🔗 {url}")
+        if snippet:
+            msg_lines.append(f"   📝 {snippet}")
     
     if result.get('recommended_topic'):
         rec = result['recommended_topic']

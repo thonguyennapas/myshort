@@ -111,7 +111,7 @@ def run_agent(step_num, agent_args, state, dry_run=False):
     cmd = [sys.executable, script_path] + agent_args
     if dry_run:
         cmd.append("--dry-run")
-    cmd.extend(["--json"])
+    cmd.extend(["--json", "--no-telegram"])
     
     print(f"  🔧 CMD: {' '.join(cmd[:5])}...")
     
@@ -317,6 +317,39 @@ def run_pipeline(args):
     print(f"\n  📁 Output: {output_dir}")
     print(f"  📁 State: {state.state_file}")
     print(f"{'━' * 50}\n")
+    
+    # ── Telegram: Gửi 1 tin nhắn tổng hợp DUY NHẤT ──
+    if args.send_telegram:
+        try:
+            from utils import send_telegram as tg_send
+            msg_lines = ["🎬 *MyShort Pipeline - Kết quả tổng hợp*", ""]
+            msg_lines.append(f"📝 Session: `{state.session_id}`")
+            msg_lines.append(f"🔄 Mode: {'DRY-RUN' if args.dry_run else 'PRODUCTION'}")
+            msg_lines.append("")
+            
+            for step_num in range(1, 6):
+                agent = AGENTS[step_num]
+                step_state = state.get_step(step_num)
+                status = step_state.get("status", "skipped")
+                icon = "✅" if status == "completed" else "❌" if status == "failed" else "⏭️"
+                msg_lines.append(f"{icon} Step {step_num}: {agent['emoji']} {agent['name']} — {status}")
+            
+            # Thêm chi tiết từ kết quả từng agent
+            if results.get(1) and results[1].get('trends'):
+                msg_lines.append(f"\n🔍 *Trend Researcher:*")
+                for i, t in enumerate(results[1].get('trends', [])[:5]):
+                    name = t.get('name', '?')[:60]
+                    url = t.get('url', '')
+                    msg_lines.append(f"  {i+1}. {name}")
+                    if url:
+                        msg_lines.append(f"     🔗 {url}")
+            
+            msg_lines.append(f"\n📁 Output: `{output_dir}`")
+            
+            tg_send("\n".join(msg_lines))
+            print_success("Đã gửi kết quả tổng hợp qua Telegram")
+        except Exception as e:
+            print_warning(f"Không gửi được Telegram: {e}")
     
     return results
 

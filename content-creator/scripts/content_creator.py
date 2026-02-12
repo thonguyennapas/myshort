@@ -395,6 +395,8 @@ def main():
                        help="Phong cách (mặc định: cocomelon)")
     parser.add_argument("--dry-run", action="store_true",
                        help="Test không gọi LLM thật")
+    parser.add_argument("--no-telegram", action="store_true",
+                       help="Không gửi Telegram notification")
     parser.add_argument("--review-prompts", action="store_true",
                        help="Hiển thị Veo prompts để review")
     parser.add_argument("--output", help="Đường dẫn output")
@@ -468,7 +470,9 @@ def main():
     
     print(f"{'━' * 50}\n")
     
-    # ── Telegram Notification ──
+    # ── Telegram Notification (chỉ gửi khi chạy standalone) ──
+    if args.no_telegram or args.json:
+        return
     msg_lines = ["✍️ *Agent 2: Content Creator*", ""]
     msg_lines.append(f"🎬 *{script.get('title', 'N/A')}*")
     msg_lines.append(f"🎯 Chủ đề: {script.get('theme', topic)}")
