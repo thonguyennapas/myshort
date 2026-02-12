@@ -187,27 +187,34 @@ Qua file JSON trong `~/myshort-output/`:
 
 ## 🔄 Cập nhật & Khởi động lại (trên VPS)
 
-Khi có thay đổi code mới, chạy 3 lệnh sau trên VPS:
+Khi có thay đổi code mới:
 
 ```bash
-# 1. Dừng pipeline đang chạy
-screen -X -S myshort quit
+# 1. Dừng pipeline nếu đang chạy
+screen -X -S myshort quit 2>/dev/null
 
 # 2. Pull code mới từ git
 cd ~/napas/openclaw/myshort
 git pull origin main
 
-# 3. (Tùy chọn) Deploy lại skills nếu có thay đổi SKILL.md
+# 3. Deploy lại skills (BẮT BUỘC khi sửa SKILL.md hoặc scripts)
 bash scripts/deploy.sh
-
-# 4. Chạy lại pipeline
-bash scripts/start.sh
 ```
 
-### Quick 1-liner (copy-paste):
+> ⚠️ **KHÔNG chạy `start.sh`** nếu bạn chỉ chat qua Telegram bot!
+> `start.sh` sẽ khởi động **FULL PIPELINE 5 agent** chạy nền → gây ra tin nhắn pipeline thừa.
+
+### Quick 1-liner (chỉ deploy, KHÔNG start pipeline):
 
 ```bash
-screen -X -S myshort quit 2>/dev/null; cd ~/napas/openclaw/myshort && git pull origin main && bash scripts/deploy.sh && bash scripts/start.sh
+screen -X -S myshort quit 2>/dev/null; cd ~/napas/openclaw/myshort && git pull origin main && bash scripts/deploy.sh
+```
+
+### Muốn chạy full pipeline thủ công (tùy chọn):
+
+```bash
+# Chỉ dùng khi bạn MUỐN chạy full 5 agent
+bash scripts/start.sh --topic "counting animals"
 ```
 
 ### Kiểm tra trạng thái:
