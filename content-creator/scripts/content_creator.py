@@ -427,6 +427,19 @@ def main():
     
     if script is None:
         print_error("Không tạo được kịch bản!")
+        # Gửi Telegram thông báo lỗi để user biết
+        if not (hasattr(args, 'no_telegram') and args.no_telegram):
+            fail_msg = [
+                "✍️ *Agent 2: Content Creator*", "",
+                "❌ *Tạo kịch bản THẤT BẠI!*",
+                f"🎯 Chủ đề: {topic}",
+                f"⏱ Thời lượng: {args.duration} phút",
+                "",
+                "💡 Có thể do LLM API lỗi/timeout.",
+                "Thử lại: viết kịch bản counting",
+            ]
+            send_telegram("\n".join(fail_msg))
+            print_success("Đã gửi thông báo lỗi qua Telegram")
         sys.exit(1)
     
     # Review Veo prompts
@@ -443,35 +456,34 @@ def main():
     # Output
     if args.json:
         print(json.dumps(script, ensure_ascii=False, indent=2))
-        return
+    else:
+        # Save
+        output_dir = ensure_output_dirs()
+        output_path = args.output or str(
+            output_dir / "scripts" / f"script-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+        )
+        save_json(script, output_path)
+        
+        # Summary
+        print(f"\n{'━' * 50}")
+        print(f"✅ Kịch bản đã tạo!")
+        print(f"📁 File: {output_path}")
+        print(f"🎬 Title: {script.get('title', 'N/A')}")
+        print(f"⏱️  Duration: {script.get('duration_minutes', 'N/A')} phút")
+        print(f"🎵 Genre: {script.get('music_direction', {}).get('genre', 'N/A')}")
+        print(f"🎬 Scenes: {len(script.get('scenes', []))}")
+        
+        # Lyrics preview
+        lyrics = script.get("lyrics", {})
+        if lyrics.get("chorus"):
+            print(f"\n🎤 Chorus preview:")
+            for line in lyrics["chorus"].split("\n")[:4]:
+                print(f"   ♪ {line}")
+        
+        print(f"{'━' * 50}\n")
     
-    # Save
-    output_dir = ensure_output_dirs()
-    output_path = args.output or str(
-        output_dir / "scripts" / f"script-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
-    )
-    save_json(script, output_path)
-    
-    # Summary
-    print(f"\n{'━' * 50}")
-    print(f"✅ Kịch bản đã tạo!")
-    print(f"📁 File: {output_path}")
-    print(f"🎬 Title: {script.get('title', 'N/A')}")
-    print(f"⏱️  Duration: {script.get('duration_minutes', 'N/A')} phút")
-    print(f"🎵 Genre: {script.get('music_direction', {}).get('genre', 'N/A')}")
-    print(f"🎬 Scenes: {len(script.get('scenes', []))}")
-    
-    # Lyrics preview
-    lyrics = script.get("lyrics", {})
-    if lyrics.get("chorus"):
-        print(f"\n🎤 Chorus preview:")
-        for line in lyrics["chorus"].split("\n")[:4]:
-            print(f"   ♪ {line}")
-    
-    print(f"{'━' * 50}\n")
-    
-    # ── Telegram Notification (chỉ gửi khi chạy standalone) ──
-    if args.no_telegram or args.json:
+    # ── Telegram Notification (chỉ gửi khi chạy standalone, không qua orchestrator) ──
+    if args.no_telegram:
         return
     msg_lines = ["✍️ *Agent 2: Content Creator*", ""]
     msg_lines.append(f"🎬 *{script.get('title', 'N/A')}*")

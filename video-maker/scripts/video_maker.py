@@ -497,7 +497,7 @@ def main():
         print(f"{'━' * 50}\n")
     
     # ── Telegram Notification (chỉ gửi khi chạy standalone) ──
-    if args.no_telegram or args.json:
+    if args.no_telegram:
         return
     
     msg_lines = ["🎬 *Agent 4: Video Maker*", ""]

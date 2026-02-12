@@ -284,33 +284,31 @@ def main():
     # Output
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        return
-    
-    # Save to file
-    output_dir = ensure_output_dirs()
-    output_path = args.output or str(
-        output_dir / "trends" / f"trend-{datetime.now().strftime('%Y%m%d')}.json"
-    )
-    save_json(result, output_path)
-    
-    # Summary
-    print(f"\n{'━' * 50}")
-    print(f"📊 KẾT QUẢ: {result['total_trends']} xu hướng tìm được")
-    print(f"📁 File: {output_path}")
-    
-    if result["recommended_topic"]:
-        rec = result["recommended_topic"]
-        print(f"\n🏆 TOP RECOMMENDATION:")
-        print(f"   Tên: {rec['name'][:80]}")
-        print(f"   Category: {rec['category']}")
-        print(f"   Keywords: {', '.join(rec.get('keywords', []))}")
-        print(f"   Relevance: {rec['relevance']}/100")
-    
-    print(f"{'━' * 50}\n")
+    else:
+        # Save to file
+        output_dir = ensure_output_dirs()
+        output_path = args.output or str(
+            output_dir / "trends" / f"trend-{datetime.now().strftime('%Y%m%d')}.json"
+        )
+        save_json(result, output_path)
+        
+        # Summary
+        print(f"\n{'━' * 50}")
+        print(f"📊 KẾT QUẢ: {result['total_trends']} xu hướng tìm được")
+        print(f"📁 File: {output_path}")
+        
+        if result["recommended_topic"]:
+            rec = result["recommended_topic"]
+            print(f"\n🏆 TOP RECOMMENDATION:")
+            print(f"   Tên: {rec['name'][:80]}")
+            print(f"   Category: {rec['category']}")
+            print(f"   Keywords: {', '.join(rec.get('keywords', []))}")
+            print(f"   Relevance: {rec['relevance']}/100")
+        
+        print(f"{'━' * 50}\n")
     
     # ── Telegram Notification (chỉ gửi khi chạy standalone, không qua orchestrator) ──
-    # Khi orchestrator gọi, nó truyền --json và --no-telegram
-    if args.no_telegram or args.json:
+    if args.no_telegram:
         return
     msg_lines = ["🔍 *Agent 1: Trend Researcher*", ""]
     msg_lines.append(f"📅 Ngày: {result.get('date', 'N/A')}")
