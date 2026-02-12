@@ -258,12 +258,12 @@ def call_llm(prompt, config):
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "temperature": 0.8,
-                "maxOutputTokens": 8192,
+                "maxOutputTokens": 16384,
                 "responseMimeType": "application/json"
             }
         }
         
-        response = requests.post(url, json=payload, timeout=120)
+        response = requests.post(url, json=payload, timeout=1200)
         response.raise_for_status()
         data = response.json()
         
@@ -283,7 +283,7 @@ def call_llm(prompt, config):
             "response_format": {"type": "json_object"}
         }
         
-        response = requests.post(url, json=payload, headers=headers, timeout=120)
+        response = requests.post(url, json=payload, headers=headers, timeout=1200)
         response.raise_for_status()
         data = response.json()
         
